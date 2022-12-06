@@ -49,7 +49,7 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: 每日天气
-          body: file://weather.html
+          html_body: file://weather.html
           to: chengwanzhao@qq.com
           from: 每日天气
           content_type: text/html,
@@ -74,7 +74,7 @@ jobs:
           username: ${{ secrets.MAIL_USERNAME }}
           password: ${{ secrets.MAIL_PASSWORD }}
           subject: 每日 天气 内容 (${{env.REPORT_DATE}})
-          html_body: file://result.html
+          body: file://result.html
           to: chengwanzhao@qq.com
           from: 每日天气推送
           content_type: text/html
