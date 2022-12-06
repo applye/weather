@@ -4,11 +4,58 @@ on:
   push:
   schedule:
     - cron: '0 0 * * *'
+  # 手动触发部署
+  workflow_dispatch:
 
 jobs: 
   weather:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16]
 
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+        with:
+          # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v2.2.4
+        with:
+          version: 7
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          # 选择要使用的 node 版本
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+      
+      # 安装依赖
+      - name: Install Dependencies
+        run: pnpm install
+
+      # 运行构建脚本
+      - name: Build weather
+        run: |
+            npm run build
+
+      - name: send email
+        uses: 'dawidd6/action-send-mail@master'
+        with:
+          server_address: smtp.126.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: 每日 天气 内容 (${{env.REPORT_DATE}})
+          body: file://weather.html
+          to: chengwanzhao@qq.com
+          from: 每日天气
+          content_type: text/html
+
+  weather_planin:
+    runs-on: ubuntu-latest
     steps:
       - name: checkout code
         uses: actions/checkout@v2

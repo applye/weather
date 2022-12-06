@@ -1,0 +1,19 @@
+{
+  "name": "nweater",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf ./weather.html ./result.html ",
+    "build": "npm run clean && node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dayjs": "^1.11.6",
+    "node-fetch": "^2.6.7",
+    "nodemailer": "^6.8.0"
+  }
+}
